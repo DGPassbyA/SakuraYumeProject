@@ -9,7 +9,7 @@ A Princess Connect Re:Dive clan battle manage website
 
 ## About
 
-#### 前端：vue + axios
+#### 前端：vue + axios + mdui
 
 #### 后端：go-gin
 
