@@ -1,6 +1,7 @@
 package main
 
 import (
+	"main/conf"
 	"main/middlewares"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ func main() {
 	r.Use(middlewares.Cors())
 	r.GET("/getHistory", middlewares.GetHistory)
 	r.GET("/getToken", middlewares.GetToken)
-	r.GET("/parseToken", middlewares.ParseToken)
+	// r.GET("/parseToken", middlewares.ParseToken)
 	r.POST("/addHistory", middlewares.AddHistory)
-	r.Run("127.0.0.1:8081")
+	r.Run(conf.Domain)
 }

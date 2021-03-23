@@ -92,7 +92,9 @@ export default {
   },
   mounted () {
     axios
-      .get('http://127.0.0.1:8081/getHistory?clanname=樱之梦&time=202012')
+      .get('http://localhost:8081/getHistory?clanName=樱之梦&time=202102',{
+        withCredentials: true
+      })
       .then(response => (
         this.boss = this.boss = historyToBoss(response.data.data)
       ))

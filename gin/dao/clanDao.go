@@ -82,7 +82,7 @@ func getNameByUid(uid int, members []Member) string {
 			return m.Name
 		}
 	}
-	return ""
+	return "???"
 }
 
 //时间+公会名查询公会出刀记录
@@ -118,7 +118,7 @@ func GetHistoryByTime(clanName string, time string) []History {
 	}
 	return historyList
 }
-func InsertHistory(clanName string, month string, uid, round, boss, dmg, flag int) bool {
+func InsertHistory(clanName string, month string, uid, round, boss, dmg, flag uint) bool {
 	gid, cid := GetGidAndCidByClanName(clanName)
 	if gid == 0 || cid == -1 {
 		return false
@@ -127,15 +127,11 @@ func InsertHistory(clanName string, month string, uid, round, boss, dmg, flag in
 	//flag：整刀0 尾刀1 补时刀2
 	db, err := _connect()
 	checkErr(err)
-	err = db.Ping()
-	checkErr(err)
-	fmt.Println("Successfully connect to database.")
 	dt := time.Now()
 	sqlStatement, err := db.Prepare("INSERT INTO " + tableName + " (`uid`, `alt`, `time`, `round`, `boss`, `dmg`, `flag`) VALUES (?, ?, ?, ?, ?, ?, ?)")
 	res, err := sqlStatement.Exec(uid, gid, dt, round, boss, dmg, flag)
 	checkErr(err)
 	rowCount, err := res.RowsAffected()
-	fmt.Printf("Insert %d row(s) of data.", rowCount)
 	db.Close()
 	if rowCount == 1 {
 		return true

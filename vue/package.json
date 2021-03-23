@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "mdui": "^1.0.2",
     "vue": "^2.5.2",
+    "vue-cookies": "^1.7.4",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
