@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"main/conf"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -24,12 +26,9 @@ type History struct {
 }
 
 func _connect() (*sql.DB, error) {
-	database_path := "./clanbattle.db"
+	database_path := conf.DatabasePath
 	db, err := sql.Open("sqlite3", database_path)
 	return db, err
-}
-func _close(db *sql.DB) {
-	db.Close()
 }
 func checkErr(err error) {
 	if err != nil {
@@ -42,6 +41,7 @@ func GetGidAndCidByClanName(clanName string) (int, int) {
 	}
 	db, err := _connect()
 	checkErr(err)
+	defer db.Close()
 	sql := "SELECT gid, cid FROM clan WHERE name = ? "
 	rows, err := db.Query(sql, clanName)
 	checkErr(err)
@@ -51,7 +51,6 @@ func GetGidAndCidByClanName(clanName string) (int, int) {
 		err := rows.Scan(&gid, &cid)
 		checkErr(err)
 	}
-	_close(db)
 	return gid, cid
 }
 
@@ -63,6 +62,7 @@ func GetMembersByClanName(clanName string) []Member {
 	}
 	db, err := _connect()
 	checkErr(err)
+	defer db.Close()
 	sql := "SELECT uid,name FROM member WHERE gid = ? "
 	rows, err := db.Query(sql, gid)
 	checkErr(err)
@@ -74,7 +74,6 @@ func GetMembersByClanName(clanName string) []Member {
 		checkErr(err)
 		members = append(members, member)
 	}
-	_close(db)
 	return members
 }
 func getNameByUid(uid int, members []Member) string {
@@ -98,6 +97,7 @@ func GetHistoryByTime(clanName string, time string) []History {
 	tableName := fmt.Sprintf("battle_%d_%d_%s", gid, cid, time)
 	db, err := _connect()
 	checkErr(err)
+	defer db.Close()
 	sql := "SELECT * FROM " + tableName + " WHERE alt = ? "
 	rows, err := db.Query(sql, gid)
 	if err != nil {
@@ -116,6 +116,30 @@ func GetHistoryByTime(clanName string, time string) []History {
 		}
 		historyList = append(historyList, history)
 	}
-	_close(db)
 	return historyList
+}
+func InsertHistory(clanName string, month string, uid, round, boss, dmg, flag int) bool {
+	gid, cid := GetGidAndCidByClanName(clanName)
+	if gid == 0 || cid == -1 {
+		return false
+	}
+	tableName := fmt.Sprintf("battle_%d_%d_%s", gid, cid, month)
+	//flag：整刀0 尾刀1 补时刀2
+	db, err := _connect()
+	checkErr(err)
+	err = db.Ping()
+	checkErr(err)
+	fmt.Println("Successfully connect to database.")
+	dt := time.Now()
+	sqlStatement, err := db.Prepare("INSERT INTO " + tableName + " (`uid`, `alt`, `time`, `round`, `boss`, `dmg`, `flag`) VALUES (?, ?, ?, ?, ?, ?, ?)")
+	res, err := sqlStatement.Exec(uid, gid, dt, round, boss, dmg, flag)
+	checkErr(err)
+	rowCount, err := res.RowsAffected()
+	fmt.Printf("Insert %d row(s) of data.", rowCount)
+	db.Close()
+	if rowCount == 1 {
+		return true
+	} else {
+		return false
+	}
 }
