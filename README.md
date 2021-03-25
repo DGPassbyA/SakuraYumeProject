@@ -28,3 +28,5 @@ A Princess Connect Re:Dive clan battle manage website
 目前数据交互上主要是修改HoshinoBot自身维护的sqlite数据库文件。HoshinoBot本身接收来自mirai或者cqhttp的消息，所以理论上是可以发送相同格式的包来模拟QQ群里发消息来报刀的，不过还没找到文档，先摸鱼🐟。至于安全问题，呃.......
 
 如果要测试，只要把机器人的sqlite文件拉一份过来，改下路径conf里的`DatabasePath`就好
+
+关于token的发放问题，应该会参照yobot的方法，通过qq发放，到时候再写一个HoshinoBot的token生成插件吧哈哈哈哈
