@@ -1,9 +1,8 @@
+import {BossName} from './data.js'
+import {BossHP} from './data.js'
 function historyToBoss(data){
     let round, boss = 1;
     let results = [];
-    const BossName = ["哥布林王", "狮鹫", "棱镜夫人", "独眼巨人", "双鱼"];
-    //国服数据各阶段血量暂时一样
-    const BossHP = [6000000, 8000000, 10000000, 12000000, 20000000];
     let lastRound = data[data.length - 1].round;
     let lastBoss = data[data.length - 1].boss;
     let i = 0x00;

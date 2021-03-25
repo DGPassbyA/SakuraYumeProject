@@ -19,6 +19,8 @@ A Princess Connect Re:Dive clan battle manage website
 
 ### 3.23 重构框架，关于设置的项归类到conf，后端实现出刀接口，实现token生成和验证功能
 
+### 3-25 简单完成前端出刀功能，准备动手解决交互和BOSS信息存储的问题
+
 -----------------------
 
 ## More

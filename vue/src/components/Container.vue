@@ -1,6 +1,6 @@
 <template>
   <div class="mdui-container doc-container">
-    <router-view :key="new Date().getTime()"></router-view>
+    <router-view :key="new Date().getTime()" @changeBoss="changeBoss"></router-view>
   </div>
 </template>
 
@@ -10,7 +10,23 @@
 // import HistoryPanel from "@/components/HistoryPanel";
 export default {
   name: "Container",
-  // components: {HistoryPanel, AddDamagePanel, Boss}
+  data: function (){
+    return {
+      nowBoss:{
+        "round" : 2,
+        "name" : "飞龙",
+        "NHP" : 6000000
+      }
+    }
+  },
+  methods: {
+    changeBoss: function (round, name, NHP) {
+      this.nowBoss.round = round;
+      this.nowBoss.name = name;
+      this.nowBoss.NHP = NHP;
+      this.$emit("changeBoss",this.nowBoss.round, this.nowBoss.name, this.nowBoss.NHP);
+    }
+  },
 }
 </script>
 

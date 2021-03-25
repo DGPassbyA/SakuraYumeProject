@@ -96,7 +96,11 @@ export default {
         withCredentials: true
       })
       .then(response => (
-        this.boss = this.boss = historyToBoss(response.data.data)
+        this.boss = historyToBoss(response.data.data)
+      ))
+      .then(response => (
+        //不能直接传对象，不然会死循环？？？
+        this.$emit("changeBoss",this.boss[0].round,this.boss[0].name,this.boss[0].NHP)
       ))
   }
 }

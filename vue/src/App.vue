@@ -1,9 +1,9 @@
 <template>
   <div>
-    <TopNav title="SakuraYume·樱之梦"></TopNav>
+    <TopNav v-bind:title="webTitle"></TopNav>
     <LeftBar></LeftBar>
-    <Container></Container>
-    <add-damage-panel></add-damage-panel>
+    <Container @changeBoss="changeBoss"></Container>
+    <AddDamagePanel :round="round" :name="name" :NHP="NHP" :clanName="clanName"></AddDamagePanel>
   </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
   name: 'App',
   data: function(){
     return {
+      round : 2,
+      name : "飞龙",
+      NHP : 6000000,
+      webTitle: "SakuraYume·樱之梦",
+      clanName: "樱之梦"
     }
   },
   components: {
@@ -25,6 +30,13 @@ export default {
     LeftBar,
     TopNav,
   },
+  methods: {
+    changeBoss: function (round, name, NHP) {
+      this.round = round;
+      this.name = name;
+      this.NHP = NHP;
+    }
+  }
 }
 </script>
 
