@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"main/conf"
 	clanDao "main/dao"
 	token "main/util"
@@ -34,7 +35,7 @@ func checkCookies(c *gin.Context, f func(uint)) {
 	//check token
 	valid, uid, msg := token.ParseToken(tokenString, conf.SecretKey)
 	if !valid {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(200, gin.H{
 			"code":    1,
 			"message": msg,
 		})
@@ -47,7 +48,7 @@ func GetHistory(c *gin.Context) {
 	checkCookies(c, func(uid uint) {
 		var form GetHistoryPayload
 		if err := c.ShouldBind(&form); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"code":    1,
 				"message": err.Error(),
 			})
@@ -102,33 +103,34 @@ func GetToken(c *gin.Context) {
 		})
 		return
 	}
-	http.SetCookie(c.Writer, &http.Cookie{
-		Name:     "sakurayume_user_token",
-		Value:    token,
-		Path:     "/",
-		MaxAge:   604800,
-		Secure:   true,
-		HttpOnly: false,
-		SameSite: 4,
-	})
 	c.JSON(200, gin.H{
 		"code":  0,
 		"token": token,
 	})
 }
 
-// func ParseToken(c *gin.Context) {
-// 	tokenString := c.Query("token")
-// 	valid, uid, msg := token.ParseToken(tokenString, conf.SecretKey)
-// 	if valid {
-// 		c.JSON(200, gin.H{
-// 			"result": valid,
-// 			"uid":    uid,
-// 		})
-// 	} else {
-// 		c.JSON(200, gin.H{
-// 			"result": valid,
-// 			"err":    msg,
-// 		})
-// 	}
-// }
+func ParseToken(c *gin.Context) {
+	tokenString := c.PostForm("token")
+	fmt.Println(tokenString)
+	valid, _, msg := token.ParseToken(tokenString, conf.SecretKey)
+	if valid {
+		http.SetCookie(c.Writer, &http.Cookie{
+			Name:     "sakurayume_user_token",
+			Value:    tokenString,
+			Path:     "/",
+			MaxAge:   604800,
+			Secure:   true,
+			HttpOnly: false,
+			SameSite: 4,
+		})
+		c.JSON(200, gin.H{
+			"code":   0,
+			"result": valid,
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"code": 1,
+			"err":  msg,
+		})
+	}
+}

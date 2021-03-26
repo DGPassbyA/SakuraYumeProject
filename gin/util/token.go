@@ -31,6 +31,9 @@ func ParseToken(tokenString string, SecretKey []byte) (bool, uint, string) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return SecretKey, nil
 	})
+	if err != nil {
+		return false, 0, "Invalid token"
+	}
 	var flag bool
 	var uid uint
 	var msg string
@@ -49,6 +52,9 @@ func ParseToken(tokenString string, SecretKey []byte) (bool, uint, string) {
 		} else {
 			msg = "Couldn't handle this token"
 		}
+	} else {
+		flag = false
+		msg = "Couldn't handle this token"
 	}
 	return flag, uid, msg
 }

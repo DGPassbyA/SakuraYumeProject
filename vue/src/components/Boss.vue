@@ -88,7 +88,7 @@ export default {
       }
       let pi = document.getElementById("pi-" + i.getAttribute("num"));
       this.panel.toggle(pi);
-    }
+    },
   },
   mounted () {
     axios
@@ -96,7 +96,10 @@ export default {
         withCredentials: true
       })
       .then(response => (
-        this.boss = historyToBoss(response.data.data)
+        response.status === 200 && response.data.code === 0 ? this.boss = historyToBoss(response.data.data) : mdui.snackbar({
+                message: ' 获取失败 ',
+                position: 'top',
+            })
       ))
       .then(response => (
         //不能直接传对象，不然会死循环？？？

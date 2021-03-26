@@ -26,8 +26,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {BossName} from '../assets/js/data.js'
+import axios from 'axios';
+import {BossName} from '../assets/js/data.js';
+import mdui from 'mdui';
 export default {
   name: "AddDamagePanel",
   props: ["round", "name", "NHP", "clanName"],
@@ -54,8 +55,11 @@ export default {
           withCredentials: true
         })
         .then(response => (
-          console.log(response)
-        ))
+              response.status === 200 && response.data.code === 0 ? console.log(response) : mdui.snackbar({
+                message: ' 出刀失败 ',
+                position: 'top',
+            })
+      ))
     }
   }
 }

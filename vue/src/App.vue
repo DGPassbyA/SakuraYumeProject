@@ -4,6 +4,7 @@
     <LeftBar></LeftBar>
     <Container @changeBoss="changeBoss"></Container>
     <AddDamagePanel :round="round" :name="name" :NHP="NHP" :clanName="clanName"></AddDamagePanel>
+    <AddCookiePanel></AddCookiePanel>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import TopNav from '@/components/TopNav'
 import LeftBar from "@/components/LeftDrawer";
 import Container from "@/components/Container";
 import AddDamagePanel from "@/components/AddDamagePanel";
+import AddCookiePanel from "@/components/AddCookiePanel";
 
 export default {
   name: 'App',
@@ -29,6 +31,7 @@ export default {
     Container,
     LeftBar,
     TopNav,
+    AddCookiePanel,
   },
   methods: {
     changeBoss: function (round, name, NHP) {
