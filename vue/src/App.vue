@@ -1,10 +1,10 @@
 <template>
   <div>
-    <TopNav v-bind:title="webTitle"></TopNav>
+    <TopNav v-bind:title="webTitle" @changeHasCookie="changeHasCookie"></TopNav>
     <LeftBar></LeftBar>
     <Container @changeBoss="changeBoss"></Container>
     <AddDamagePanel :round="round" :name="name" :NHP="NHP" :clanName="clanName"></AddDamagePanel>
-    <AddCookiePanel></AddCookiePanel>
+    <AddCookiePanel :hasCookie="hasCookie"></AddCookiePanel>
   </div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
       name : "飞龙",
       NHP : 6000000,
       webTitle: "SakuraYume·樱之梦",
-      clanName: "樱之梦"
+      clanName: "樱之梦",
+      hasCookie: false,
     }
   },
   components: {
@@ -38,6 +39,10 @@ export default {
       this.round = round;
       this.name = name;
       this.NHP = NHP;
+    },
+    changeHasCookie:function(flag){
+      this.hasCookie = flag;
+      console.log(this.hasCookie);
     }
   }
 }

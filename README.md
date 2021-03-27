@@ -21,6 +21,8 @@ A Princess Connect Re:Dive clan battle manage website
 
 ### 3-25 简单完成前端出刀功能，准备动手解决交互和BOSS信息存储的问题
 
+### 3-27 完成生成Token的插件的编写
+
 -----------------------
 
 ## More

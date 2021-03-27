@@ -20,15 +20,19 @@ export default {
   name: "AddCookiePanel",
   props:{
     title: String,
+    hasCookie: Boolean,
   },
   data: function(){
       return {
           cookie: "",
-          hasCookie: false,
       }
   },
   methods: {
       manageCookie: function(event){
+        console.log("aa");
+        if(this.$cookies.isKey("sakurayume_user_token")){
+            this.hasCookie = true;
+        }
         if(this.hasCookie === true) {
             this.deleteCookie()
         }else{

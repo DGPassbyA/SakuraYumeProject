@@ -89,6 +89,11 @@ export default {
       let pi = document.getElementById("pi-" + i.getAttribute("num"));
       this.panel.toggle(pi);
     },
+    fillBoss: function (response) {
+      this.boss = historyToBoss(response.data.data)
+      //不能直接传对象，不然会死循环？？？
+      this.$emit("changeBoss",this.boss[0].round,this.boss[0].name,this.boss[0].NHP)
+    }
   },
   mounted () {
     axios
@@ -96,14 +101,10 @@ export default {
         withCredentials: true
       })
       .then(response => (
-        response.status === 200 && response.data.code === 0 ? this.boss = historyToBoss(response.data.data) : mdui.snackbar({
+        response.status === 200 && response.data.code === 0 ? this.fillBoss(response) : mdui.snackbar({
                 message: ' 获取失败 ',
                 position: 'top',
             })
-      ))
-      .then(response => (
-        //不能直接传对象，不然会死循环？？？
-        this.$emit("changeBoss",this.boss[0].round,this.boss[0].name,this.boss[0].NHP)
       ))
   }
 }
