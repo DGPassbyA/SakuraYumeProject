@@ -94,20 +94,6 @@ func AddHistory(c *gin.Context) {
 		}
 	})
 }
-func GetToken(c *gin.Context) {
-	token, err := token.CreateToken(conf.SecretKey, string(conf.SecretKey), 123456, false)
-	if err != nil {
-		c.JSON(200, gin.H{
-			"code":  1,
-			"error": err.Error(),
-		})
-		return
-	}
-	c.JSON(200, gin.H{
-		"code":  0,
-		"token": token,
-	})
-}
 
 func ParseToken(c *gin.Context) {
 	tokenString := c.PostForm("token")

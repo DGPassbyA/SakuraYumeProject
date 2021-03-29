@@ -40,6 +40,14 @@ export default {
   },
   methods: {
     addHisory: function (event){
+      var reg = new RegExp("^[0-9]*$");
+      if(!reg.test(this.dmg)){
+        mdui.snackbar({
+                message: ' 请输入数字 ',
+                position: 'top',
+            })
+        this.dmg = "";
+      }
       let data = new FormData();
       let nowDate = new Date();
       let year = nowDate.getFullYear();
@@ -55,7 +63,7 @@ export default {
           withCredentials: true
         })
         .then(response => (
-              response.status === 200 && response.data.code === 0 ? console.log(response) : mdui.snackbar({
+              response.data.code === 0 ? console.log(response) : mdui.snackbar({
                 message: ' 出刀失败 ',
                 position: 'top',
             })
