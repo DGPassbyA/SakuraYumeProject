@@ -97,7 +97,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8081/getHistory?clanName=樱之梦&time=202102',{
+      .get('https://xxxxx:8081/api/getHistory?clanName=樱之梦&time=202102',{
         withCredentials: true
       })
       .then(response => (

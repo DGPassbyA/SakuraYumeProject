@@ -29,8 +29,9 @@ func CreateToken(SecretKey []byte, issuer string, ExpiresAt time.Duration, uid u
 	return token.SignedString(SecretKey)
 }
 func main() {
-	var SecretKey = []byte("TestKey")
-	var Issuer = []byte("SakuraYume")
+	//和后端的一样
+	var SecretKey = []byte("SecretKey")
+	var Issuer = []byte("Issuer")
 	var ExpiresAt = time.Hour * 24
 	uid, _ := strconv.ParseUint(os.Args[1], 10, 0)
 	isAdmin, _ := strconv.ParseBool(os.Args[2])

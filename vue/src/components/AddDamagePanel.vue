@@ -59,7 +59,7 @@ export default {
       data.append("boss", BossName.indexOf(this.name) + 1);
       data.append("flag", this.type);
       axios
-        .post('http://localhost:8081/addHistory',data, {
+        .post('https://xxxxx:8081/api/addHistory',data, {
           withCredentials: true
         })
         .then(response => (

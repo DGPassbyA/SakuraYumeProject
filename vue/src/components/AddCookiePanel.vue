@@ -51,7 +51,7 @@ export default {
         data.append("token",this.cookie);
         this.cookie = "";
         axios
-        .post('http://localhost:8081/parseToken',data, {
+        .post('https://xxxxx/api/parseToken',data, {
             withCredentials: true
         })
         .then(response=>(

@@ -9,9 +9,9 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.Use(middlewares.Cors())
-	r.GET("/getHistory", middlewares.GetHistory)
-	r.POST("/parseToken", middlewares.ParseToken)
-	r.POST("/addHistory", middlewares.AddHistory)
-	r.Run(conf.Domain)
+	r.Use(middlewares.CorsTLS())
+	r.GET("/api/getHistory", middlewares.GetHistory)
+	r.POST("/api/parseToken", middlewares.ParseToken)
+	r.POST("/api/addHistory", middlewares.AddHistory)
+	r.RunTLS(conf.Domain, "./conf/key/ssl.pem", "./conf/key/ssl.key")
 }

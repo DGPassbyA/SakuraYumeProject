@@ -8,9 +8,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/unrolled/secure"
 )
 
-func Cors() gin.HandlerFunc {
+func CorsTLS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		w := c.Writer
 		r := c.Request
@@ -19,6 +20,15 @@ func Cors() gin.HandlerFunc {
 		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
 		w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+		secureMiddleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "localhost:8080",
+		})
+		err := secureMiddleware.Process(c.Writer, c.Request)
+		// If there was an error, do not continue.
+		if err != nil {
+			return
+		}
 		c.Next()
 	}
 }
