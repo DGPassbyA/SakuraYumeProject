@@ -27,7 +27,6 @@
 
 <script>
 import axios from 'axios';
-import {BossName} from '../assets/js/data.js';
 import mdui from 'mdui';
 export default {
   name: "AddDamagePanel",
@@ -40,34 +39,54 @@ export default {
   },
   methods: {
     addHisory: function (event){
-      var reg = new RegExp("^[0-9]*$");
-      if(!reg.test(this.dmg)){
-        mdui.snackbar({
+      new Promise((resolve, reject)=>{
+        axios.get('https://sakura.passbya.xyz:8081/api/boss.json', {
+          withCredentials: true
+        }).then(response=>{
+          resolve(response)
+        }).catch(error=>{
+          reject(error);
+        })
+      }).then(response=>{
+        var reg = new RegExp("^[0-9]*$");
+        if(!reg.test(this.dmg)){
+          mdui.snackbar({
                 message: ' 请输入数字 ',
                 position: 'top',
             })
-        this.dmg = "";
-      }
-      let data = new FormData();
-      let nowDate = new Date();
-      let year = nowDate.getFullYear();
-      let month = nowDate.getMonth();
-      data.append("clanName",this.clanName);
-      data.append("time", year + (month < 10 ? "0" + month : month + ""))
-      data.append("round", this.round);
-      data.append("dmg", this.dmg);
-      data.append("boss", BossName.indexOf(this.name) + 1);
-      data.append("flag", this.type);
-      axios
-        .post('https://xxxxx:8081/api/addHistory',data, {
-          withCredentials: true
-        })
-        .then(response => (
-              response.data.code === 0 ? console.log(response) : mdui.snackbar({
-                message: ' 出刀失败 ',
-                position: 'top',
-            })
-      ))
+          this.dmg = "";
+        }
+        let data = new FormData();
+        let nowDate = new Date();
+        let year = nowDate.getFullYear();
+        let month = nowDate.getMonth()+1;
+        let BossName = response.data.name;
+        data.append("clanName",this.clanName);
+        data.append("time", year + (month < 10 ? "0" + month : month + ""))
+        data.append("round", this.round);
+        data.append("dmg", this.dmg);
+        data.append("boss", BossName.indexOf(this.name) + 1);
+        data.append("flag", this.type);
+        axios
+          .post('https://127.0.0.1:8081/api/addHistory',data, {
+            withCredentials: true
+          })
+          .then(function(response) {
+                if(response.data.code === 0){
+                  mdui.snackbar({
+                    message: ' 出刀成功 ',
+                    position: 'top',
+                  })
+                }else{
+                  mdui.snackbar({
+                    message: ' 出刀失败 ',
+                    position: 'top',
+                  })
+                }
+          })
+      }).catch(error =>{
+        console.log(error);
+      })
     }
   }
 }

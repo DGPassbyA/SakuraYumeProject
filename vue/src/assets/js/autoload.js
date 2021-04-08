@@ -1,6 +1,23 @@
-import {BossName} from './data.js'
-import {BossHP} from './data.js'
-function historyToBoss(data){
+function historyToBoss(data,info){
+    let BossName = info.name;
+    let BossHP = info.HP;
+    if(data == undefined || data == null){
+        return [
+            {
+              "round" : 1,
+              "name" : BossName[0],
+              "AHP" : BossHP[0],
+              "NHP" : BossHP[0],
+              "history" : [
+                {
+                  "player" : "player",
+                  "time" : "0000-0-00 00:00",
+                  "damage" : 0
+                },
+              ]
+            }
+          ]
+    }
     let round, boss = 1;
     let results = [];
     let lastRound = data[data.length - 1].round;

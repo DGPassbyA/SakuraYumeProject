@@ -6,10 +6,10 @@ import GuildInfo from "@/components/GuildInfo";
 Vue.use(VueRouter);
 //
 const routes = [
-    {path:'/boss', name: 'boss', component: Boss},
+    {path:'/', name: 'boss', component: Boss},
     {path:'/history', name: 'history', component: HistoryPanel},
     {path:'/guild', name: 'guild', component: GuildInfo},
-    {path:'/', redirect:{name:'boss'}},
+    {path:'/boss', redirect:{name:'boss'}},
 ];
 const router = new VueRouter({
     mode: 'history',

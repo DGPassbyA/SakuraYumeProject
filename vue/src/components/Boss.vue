@@ -53,30 +53,7 @@ export default {
               "damage" : 0
             },
           ]
-        },
-        {
-          "round":1,
-          "name" : "飞龙",
-          "AHP" : 600000,
-          "NHP" : 0,
-          "history" : [
-            {
-              "player" : "player1",
-              "time" : "2020-9-20 16:00",
-              "damage" : 1000000
-            },
-            {
-              "player" : "player2",
-              "time" : "2020-9-20 17:00",
-              "damage" : 1000000
-            },
-            {
-              "player" : "player3",
-              "time" : "2020-9-20 20:00",
-              "damage" : 1000000
-            }
-          ]
-        },
+        }
       ]
     }
   },
@@ -89,23 +66,33 @@ export default {
       let pi = document.getElementById("pi-" + i.getAttribute("num"));
       this.panel.toggle(pi);
     },
-    fillBoss: function (response) {
-      this.boss = historyToBoss(response.data.data)
+    fillBoss: function (resolve, response) {
+      this.boss = historyToBoss(resolve.data, response.data)
       //不能直接传对象，不然会死循环？？？
       this.$emit("changeBoss",this.boss[0].round,this.boss[0].name,this.boss[0].NHP)
     }
   },
   mounted () {
-    axios
-      .get('https://xxxxx:8081/api/getHistory?clanName=樱之梦&time=202102',{
+    new Promise((resolve, reject)=>{
+      axios
+      .get('https://127.0.0.1:8081/api/getHistory?clanName=樱之梦&time=202104',{
         withCredentials: true
       })
-      .then(response => (
-        response.status === 200 && response.data.code === 0 ? this.fillBoss(response) : mdui.snackbar({
-                message: ' 获取失败 ',
-                position: 'top',
-            })
-      ))
+      .then(response=>{
+        resolve(response.data)
+      })
+      .catch(error=>{
+        reject(error)
+      })
+    }).then(resolve=>{
+      axios.get('https://127.0.0.1:8081/api/boss.json', {
+        withCredentials: true
+      }).then(response=>{
+        this.fillBoss(resolve, response)
+      })
+    }).catch(error=>{
+      console.log(error);
+    })
   }
 }
 </script>

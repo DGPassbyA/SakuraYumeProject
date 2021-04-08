@@ -51,15 +51,15 @@ export default {
         data.append("token",this.cookie);
         this.cookie = "";
         axios
-        .post('https://xxxxx/api/parseToken',data, {
+        .post('https://127.0.0.1:8081/api/parseToken',data, {
             withCredentials: true
         })
-        .then(response=>(
+        .then(response=>{
             response.data.code == 0 ? this.hasCookie = true : mdui.snackbar({
                 message: ' 无效的饼干 QAQ 再去问妈要一个吧 ',
                 position: 'top',
             })
-        ))
+        })
       }
   }
 }
