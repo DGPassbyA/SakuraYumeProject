@@ -26,7 +26,7 @@ function historyToBoss(data,info){
     for(; i < data.length; i++){
         //未击杀单独计算
         if(data[i].round == round && data[i].boss == boss){
-            if(data[i].round == lastRound && data[i].boss == lastBoss) {
+            if(data[i].round == lastRound && data[i].boss == lastBoss){
                 results[results.length - 1].NHP += data[i].dmg;
             }
             results[results.length - 1].history.unshift({
@@ -41,7 +41,7 @@ function historyToBoss(data,info){
                 "round": round,
                 "name": BossName[boss - 1],
                 "AHP": BossHP[boss - 1],
-                "NHP": 0,
+                "NHP": round == lastRound && boss==lastBoss ? data[i].dmg : 0,
                 "history": [{
                     "player": data[i].player,
                     "time": data[i].time,
