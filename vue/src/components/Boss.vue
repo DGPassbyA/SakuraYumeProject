@@ -10,7 +10,7 @@
           <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
         </div>
         <div class="mdui-progress">
-          <div class="mdui-progress-determinate" v-bind:style="{width: ((item.AHP - item.NHP)/item.AHP*100)+'%'}"></div>
+          <div class="mdui-progress-determinate" v-bind:style="{width: 100- ((item.AHP - item.NHP)/item.AHP*100) + '%'}"></div>
         </div>
         <div class="mdui-panel-item-body">
           <ul class="mdui-list">
@@ -73,9 +73,11 @@ export default {
     }
   },
   mounted () {
+    let month = new Date().getMonth()+1;
+    month = month < 10 ? "0" + month : month + ""
     new Promise((resolve, reject)=>{
       axios
-      .get('https://127.0.0.1:8081/api/getHistory?clanName=樱之梦&time=202104',{
+      .get('https://127.0.0.1:8081/api/getHistory?clanName=樱之梦&time=2021'+month,{
         withCredentials: true
       })
       .then(response=>{
